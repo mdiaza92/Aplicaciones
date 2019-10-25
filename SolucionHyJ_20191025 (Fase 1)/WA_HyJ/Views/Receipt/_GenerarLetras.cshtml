@@ -1,0 +1,92 @@
+﻿@model WA_HyJ.Models.ViewModels.GenerarLetras
+
+@{
+    Layout = null;
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+</div>
+
+<hr style="margin:10px 0; border: 1px solid #000000" />
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 4 } })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+</div>
+
+<div id="detalleletras" style="display:none;"><div class="loaderTiny"></div></div>
+
+<script type="text/javascript">
+    $(function () {
+        var _cantidadTemp = $("input[type=number]#Cantidad").val();
+        LoadDetalleLetra(_cantidadTemp);
+    });
+
+    $("input[type=number]#Cantidad").on("change", function () {
+        var valCantidad = $(this).val();
+        LoadDetalleLetra(valCantidad);
+    });
+
+    function LoadDetalleLetra(valCantidad) {
+        var valTotal = $("input#Total").val();
+        var valFecha = $("input#Fecha").val();
+
+        var divSelected = $("div#detalleletras");
+
+        divSelected.css("display", "block");
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Content("~/Receipt/DetalleLetra")',
+            data: {
+                cantidad: valCantidad,
+                total: valTotal,
+                fechafactura: valFecha
+            },
+            success: function (result) {
+                divSelected.html(result);
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            divSelected.css("display", "none");
+
+            var rsp = "";
+
+            if (jqXHR.status === 0) {
+
+                rsp = 'Not connect: Verify Network.';
+
+            } else if (jqXHR.status == 404) {
+
+                rsp = 'Requested page not found [404]';
+
+            } else if (jqXHR.status == 500) {
+
+                rsp = 'Internal Server Error [500].';
+
+            } else if (textStatus === 'parsererror') {
+
+                rsp = 'Requested JSON parse failed.';
+
+            } else if (textStatus === 'timeout') {
+
+                rsp = 'Time out error.';
+
+            } else if (textStatus === 'abort') {
+
+                rsp = 'Ajax request aborted.';
+
+            } else {
+                rsp = 'Uncaught Error: ' + jqXHR.responseText;
+            }
+
+            toastr.error(rsp);
+        });
+    }
+</script>

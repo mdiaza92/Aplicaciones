@@ -1,0 +1,360 @@
+﻿@model WA_HyJ.Models.ViewModels.RegistrarPedidos
+@using WA_HyJ.Helpers;
+
+@{
+    ViewBag.Title = "Agregar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">@ViewBag.Title</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">@Html.ActionLink("Pedidos", "Index")</li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- general form elements -->
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Registro de Pedidos</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            @*@using (Html.BeginForm("Create", "Order", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+            {
+            }*@
+            @Html.AntiForgeryToken()
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.IdProveedor, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(model => model.IdProveedor, Model.Proveedores, null, new { @class = "form-control select2" })
+                        @Html.ValidationMessageFor(model => model.IdProveedor, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <table class="table table-bordered table-hover center-all dataTable" id="DTPedidos">
+                        <thead>
+                            <tr>
+                                <th class="lastcolumn" style="width:35px;"></th>
+                                <th align="center">Producto</th>
+                                <th align="center">Cantidad</th>
+                                <th align="center">Detalle</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="form-group" id="divSelected" style="display:none;"></div>
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" disabled onclick="generarOrden(this);">Aceptar</button> | @Html.ActionLink("Regresar", "Index")
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    <script type="text/javascript">
+        $("select#IdProveedor").on("change", function () {
+            var selectedText = $(this).find("option:selected").text();
+            var selectedValue = $(this).val();
+
+            var _newURL = @Script.Action("GetPedidos", "Order", new { idprovider = "js:selectedValue" })
+
+            dtpedidos.ajax.url(_newURL).load();
+        });
+    </script>
+
+    <script type="text/javascript">
+        var _cantTotal = 0;
+        var _model = [];
+        var dtpedidos;
+
+        $(function () {
+            var idprovider = $("select#IdProveedor").find("option:selected").val();
+
+            dtpedidos = $("table#DTPedidos").DataTable({
+                "ajax": {
+                    "url": @Script.Action("GetPedidos", "Order", new { idprovider = "js:idprovider" }),
+                "type": "POST",
+                "dataSrc": "",
+                "cache": true
+                },
+            "columns": [
+                {
+                    "targets": [0],
+                    "responsivePriority": 1,
+                    "searchable": false,
+                    "orderable": false,
+                    "defaultContent": '',
+                    "className": "dt-body-center",
+                    "data": function (row, type, val, meta) {
+                        if (type === 'display') {
+                            return '<input type="checkbox" class="checkitem"/>';
+                        }
+                    }
+                },
+                {
+                    "targets": [1],
+                    "responsivePriority": 2,
+                    "data": "Producto",
+                    "defaultContent": '',
+                    "className": "dt-body-center"
+                },
+                {
+                    "targets": [2],
+                    "data": "Cantidad",
+                    "defaultContent": '',
+                    "className": "dt-body-center"
+                },
+                {
+                    "targets": [3],
+                    "data": "Detalle",
+                    "defaultContent": '',
+                    "className": "dt-body-center"
+                }
+            ],
+            "bFilter": true,
+            "lengthChange": false,
+            "scrollY": "600px",
+            "bAutoWidth": true,
+            "colReorder": true,
+            "fixedHeader": true,
+            "scrollCollapse": true,
+            "stateSave": false,
+            "responsive": {
+                "details": {
+                    "renderer": function (api, rowIdx, columns) {
+                        var data = $.map(columns, function (col, i) {
+                            return col.hidden ?
+                                '<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
+                                    '<td><b>' + col.title + '</b></td> ' +
+                                    '<td>' + col.data + '</td>' +
+                                '</tr>' :
+                                '';
+                        }).join('');
+
+                        return data ?
+                            $('<table/>').append(data) :
+                            false;
+                    }
+                },
+                "type": "column"
+            },
+            "lengthMenu": [[10, 25, 50, -1], ['10 filas', '25 filas', '50 filas', 'Todos']],
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "buttons": {
+                    "copyTitle": 'Elementos copiados',
+                    "copySuccess": {
+                        1: "Se copió un elemento",
+                        _: "Se copió %d filas"
+                    },
+                    "pageLength": {
+                        '-1': 'Mostrar todos <i class="fa fa-filter"></i>',
+                        _: 'Mostrar %d filas <i class="fa fa-filter"></i>'
+                    }
+                }
+            }
+        });
+
+            dtpedidos.columns.adjust().draw();
+
+            dtpedidos.on('draw.dt', function () {
+
+            });
+
+            //Evento cuando aun esta procesando la informacion
+            dtpedidos.on('xhr', function (e, settings, json, xhr) {
+
+            });
+
+            //Cada que se elije un checkbox de la tabla inicial se agrega el valor seleccionado a una nueva tabla
+            $('table#DTPedidos tbody').on("click", "input[type='checkbox']", function () {
+                var tr = $(this).closest('tr');
+                var row = dtpedidos.row(tr);
+                var data = row.data();
+
+                if ($(this).is(":checked")) {
+                    _cantTotal++;
+                    _model.push(data);
+                } else {
+                    _cantTotal--;
+                    _model = $.grep(_model, function (value) {
+                        return value != data;
+                    });
+                }
+
+                mostrarTablaSeleccion(_cantTotal, _model);
+            });
+        });
+
+        function mostrarTablaSeleccion(cantTotal, model) {
+            var divSelected = $("div#divSelected");
+
+            if (cantTotal > 0) {
+                divSelected.css("display", "block");
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Content("~/Order/OrderSelected")',
+                    data: {
+                        model: model
+                    },
+                    success: function (result) {
+                        divSelected.html(result);
+
+                        $("div.card-footer").find("button").prop('disabled', false);
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    var rsp = "";
+
+                    if (jqXHR.status === 0) {
+
+                        rsp = 'Not connect: Verify Network.';
+
+                    } else if (jqXHR.status == 404) {
+
+                        rsp = 'Requested page not found [404]';
+
+                    } else if (jqXHR.status == 500) {
+
+                        rsp = 'Internal Server Error [500].';
+
+                    } else if (textStatus === 'parsererror') {
+
+                        rsp = 'Requested JSON parse failed.';
+
+                    } else if (textStatus === 'timeout') {
+
+                        rsp = 'Time out error.';
+
+                    } else if (textStatus === 'abort') {
+
+                        rsp = 'Ajax request aborted.';
+
+                    } else {
+                        rsp = 'Uncaught Error: ' + jqXHR.responseText;
+                    }
+
+                    toastr.error(rsp);
+                });
+
+            } else
+                {
+                divSelected.css("display", "block");
+                divSelected.empty();
+                $("div.card-footer").find("button").prop('disabled', true);
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function generarOrden(e){
+            var _model = [];
+
+            $("table#DTOrderSelected tbody tr").each(function(){
+                var td = $(this).find("td");
+                var _idProducto = $(this).data("idproducto");
+                var _Cantidad = parseInt(td.eq(2).find("input[type=number].Cantidad").val());
+
+                _model.push({ IdProducto: _idProducto, Cantidad: _Cantidad });
+            });
+
+            //Grab antiForgeryToken.
+            var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
+
+            $.ajax({
+                url: "@Url.Action("Create", "Order")",
+                data:{
+                    model: _model
+                },
+                type: "POST",
+                dataType: 'json',
+                headers: {
+                    "__RequestVerificationToken": antiForgeryToken
+                },
+                success: function (result) {
+                    if (result.indexOf("/") > -1) {
+                        window.location.href = result;
+                    } else {
+                        toastr.info("Se obtuvo como respuesta " + result + " del servidor y no se procesó la solicitud.");
+                    }
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                var rsp = "";
+
+                if (jqXHR.status === 0) {
+
+                    rsp = 'Not connect: Verify Network.';
+
+                } else if (jqXHR.status == 404) {
+
+                    rsp = 'Requested page not found [404]';
+
+                } else if (jqXHR.status == 500) {
+
+                    rsp = 'Internal Server Error [500].';
+
+                } else if (textStatus === 'parsererror') {
+
+                    rsp = 'Requested JSON parse failed.';
+
+                } else if (textStatus === 'timeout') {
+
+                    rsp = 'Time out error.';
+
+                } else if (textStatus === 'abort') {
+
+                    rsp = 'Ajax request aborted.';
+
+                } else {
+                    rsp = 'Uncaught Error: ' + jqXHR.responseText;
+                }
+
+                toastr.error(rsp);
+            });
+        }
+    </script>
+}

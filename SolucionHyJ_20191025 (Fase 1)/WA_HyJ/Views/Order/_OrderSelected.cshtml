@@ -1,0 +1,113 @@
+﻿@model IEnumerable<WA_HyJ.Models.ViewModels.ListarProductosPorProveedor>
+
+<div class="card card-secondary card-outline">
+    <div class="card-header">
+        <h5 class="card-title">
+            <i class="fas fa-edit"></i>
+            Lista
+        </h5>
+    </div>
+    
+    <div class="card-body">
+        <table class="table table-bordered table-hover dataTable" id="DTOrderSelected">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producto)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cantidad)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrecioUnitario)
+                    </th>
+                    <th>
+                        Sub-Total
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{int count = 0;}
+                @foreach (var item in Model)
+                {
+                    count++;
+                    <tr data-idProducto="@item.IdProducto">
+                        <td valign="middle" style="text-align:center;">
+                            @count
+                        </td>
+                        <td valign="middle" style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.Producto)
+                        </td>
+                        <td valign="middle" style="text-align:center;">
+                            @Html.EditorFor(modelItem => item.Cantidad, new { htmlAttributes = new { @class = "form-control Cantidad", @Value = 0 } })
+                        </td>
+                        <td valign="middle" style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.PrecioUnitario)
+                        </td>
+                        <td valign="middle" style="text-align:center;">
+                            0.00
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <table>
+            <tbody>
+                <tr>
+                    <td><b>SUB-TOTAL</b></td>
+                    <td><div id="subtotalPedido">0.00</div></td>
+                </tr>
+                <tr>
+                    <td><b>IGV</b></td>
+                    <td><div id="IGV">@ViewBag.IGV</div></td>
+                </tr>
+                <tr>
+                    <td><b>TOTAL</b></td>
+                    <td><div id="totalPedido">0.00</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("table#DTOrderSelected tbody").on("change paste keyup", "input[type='number'].Cantidad", function () {
+        var valor = $(this).val();
+
+        var tr = $(this).closest('tr');
+
+        //get monto column
+        var col4 = tr.find("td:eq(3)").text();
+
+        var tdSubTotal = tr.find("td:eq(4)");
+
+        var subtotal = (col4 * valor);
+
+        //Calcular subtotal
+        tdSubTotal.html(subtotal.toFixed(2));
+
+        //Calcular total
+        var subtotal = 0;
+
+        $("table#DTOrderSelected td:nth-child(5)").each(function (index) {
+            subtotal = (parseFloat($(this).html()) + subtotal);
+        });
+
+        var igv = parseFloat($("div#IGV").html());
+
+        $("div#subtotalPedido").html(subtotal.toFixed(2));
+
+        var total = (subtotal + (subtotal * igv)).toFixed(2);
+
+        $("div#totalPedido").html(total);
+    });
+    
+</script>

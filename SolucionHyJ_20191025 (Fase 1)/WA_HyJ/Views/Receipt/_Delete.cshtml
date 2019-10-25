@@ -1,0 +1,53 @@
+﻿@model WA_HyJ.Models.ViewModels.EliminarComprobante
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">¿Está seguro que desea eliminar el siguiente registro?</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Comprobante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comprobante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedido.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pedido.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaRegistro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaRegistro)
+        </dd>
+    </dl>
+</div>
+
+<div class="modal-footer justify-content-between">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    <button type="button" class="btn btn-primary" data-id="@Model.Id" onclick="EliminarComprobante(this);">Eliminar</button>
+</div>

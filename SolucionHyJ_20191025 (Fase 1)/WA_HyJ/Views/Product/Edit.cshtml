@@ -1,0 +1,145 @@
+﻿@model WA_HyJ.Models.ViewModels.ActualizarProductos
+
+@{
+    ViewBag.Title = "Actualizar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">@ViewBag.Title</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- general form elements -->
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Actualización de Productos</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            @using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.IdProveedor, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(model => model.IdProveedor, Model.Proveedores, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IdProveedor, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.PrecioUnitario, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.PrecioUnitario, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PrecioUnitario, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(model => model.Moneda, Model.Monedas, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.UnidadMedida, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(model => model.UnidadMedida, Model.Unidades, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.UnidadMedida, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Peso, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.Peso, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Peso, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Tipo, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(model => model.Tipo, Model.Tipos, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.IdMarca, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(model => model.IdMarca, Model.Marcas, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IdMarca, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Aceptar</button> | @Html.ActionLink("Regresar", "Index")
+                </div>
+
+            }
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @*<script type="text/javascript">
+        $(function () {
+            $('input[name="_MonedaText"]').val($("select#Moneda").find("option:selected").text());
+            $('input[name="_UnidadText"]').val($("select#Unidad").find("option:selected").text());
+
+            $("select#Moneda").on("change", function () {
+                var selectedText = $(this).find("option:selected").text();
+                var selectedValue = $(this).val();
+                $('input[name="_MonedaText"]').attr('value', selectedText);
+            });
+
+            $("select#Unidad").on("change", function () {
+                var selectedText = $(this).find("option:selected").text();
+                var selectedValue = $(this).val();
+                $('input[name="_UnidadText"]').attr('value', selectedText);
+            });
+        });
+    </script>*@
+}

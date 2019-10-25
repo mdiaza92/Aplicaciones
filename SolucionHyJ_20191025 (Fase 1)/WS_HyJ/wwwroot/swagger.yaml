@@ -1,0 +1,1332 @@
+swagger: "2.0"
+info:
+  version: 1.0
+  title: REST API - HyJ
+  description: Lista de servicios API para la solucion de HyJ.
+  termsOfService: ''
+  contact:
+    name: Diana Rolando
+    url: ''
+    email: drolando@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+paths:
+  /DEV/api/v1/auth/login:
+    post:
+      tags:
+      - Account
+      summary: Método de logueo para consumir los servicios internos.
+      operationId: RequestToken
+      consumes:
+      - multipart/form-data
+      produces: []
+      parameters:
+      - name: Username
+        in: formData
+        required: true
+        type: string
+      - name: Password
+        in: formData
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/auth/register:
+    post:
+      tags:
+      - Account
+      operationId: Register
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces: []
+      parameters:
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/RegisterDTO'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Brand:
+    get:
+      tags:
+      - Brand
+      operationId: Get
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/BrandEntity'
+    post:
+      tags:
+      - Brand
+      operationId: Post
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/BrandEntity'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Brand/{id}:
+    get:
+      tags:
+      - Brand
+      operationId: GetBrand
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/BrandEntity'
+    put:
+      tags:
+      - Brand
+      operationId: Put
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/BrandEntity'
+      responses:
+        200:
+          description: Success
+    delete:
+      tags:
+      - Brand
+      operationId: Delete
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Kardex:
+    get:
+      tags:
+      - Kardex
+      operationId: Get
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/KardexEntity'
+    post:
+      tags:
+      - Kardex
+      operationId: Post
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/KardexRequest'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Kardex/{id}:
+    get:
+      tags:
+      - Kardex
+      operationId: GetPI
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/KardexEntity'
+    put:
+      tags:
+      - Kardex
+      operationId: Put
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/KardexRequest'
+      responses:
+        200:
+          description: Success
+    delete:
+      tags:
+      - Kardex
+      operationId: Delete
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Kardex/GetStock/{idProvider}:
+    get:
+      tags:
+      - Kardex
+      operationId: GetStock
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: idProvider
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/ProductsByProvider'
+  /DEV/api/v1/Option/GetIGV:
+    get:
+      tags:
+      - Option
+      summary: Obtener el IGV actual.
+      operationId: GetIGV
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/GetUnidadMedida:
+    get:
+      tags:
+      - Option
+      summary: Obtener la lista de unidades de medida disponibles para el sistema.
+      operationId: GetUnidadMedida
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/GetTipoMoneda:
+    get:
+      tags:
+      - Option
+      summary: Obtener la lista de monedas disponibles para el sistema.
+      operationId: GetTipoMoneda
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/GetEstadoOrden:
+    get:
+      tags:
+      - Option
+      summary: Obtener la lista de estados de las órdenes disponibles para el sistema.
+      operationId: GetEstadoOrden
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/GetEstadoLetra:
+    get:
+      tags:
+      - Option
+      operationId: GetEstadoLetra
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/GetTipoComprobante:
+    get:
+      tags:
+      - Option
+      operationId: GetTipoComprobante
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/GetEstadoRecibo:
+    get:
+      tags:
+      - Option
+      operationId: GetEstadoRecibo
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/GetTipoPago:
+    get:
+      tags:
+      - Option
+      operationId: GetTipoPago
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Option/UploadImage:
+    post:
+      tags:
+      - Option
+      summary: Uplaods an image to the server.
+      operationId: UploadImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: file
+        in: formData
+        description: ''
+        type: file
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Order:
+    get:
+      tags:
+      - Order
+      summary: Listar todas las ordenes
+      operationId: Get
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/OrderResponse'
+    post:
+      tags:
+      - Order
+      summary: Agregar una nueva orden
+      operationId: Post
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/OrderRequest'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Order/{id}:
+    get:
+      tags:
+      - Order
+      summary: Buscar una orden en específico
+      operationId: GetOrder
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID de la órden
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/OrderResponse'
+    put:
+      tags:
+      - Order
+      operationId: Put
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/OrderEntity'
+      responses:
+        200:
+          description: Success
+    delete:
+      tags:
+      - Order
+      operationId: Delete
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Order/UpdateStatus/{id}:
+    put:
+      tags:
+      - Order
+      summary: Actualiza el estado de la orden a "recibido"
+      operationId: UpdateStatus
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Order/UpdateOrderDetails/{idpedido}:
+    put:
+      tags:
+      - Order
+      summary: Actualiza el detalle de la orden, el estado del comprobante y actualiza el stock o kardex.
+      operationId: UpdateOrderDetails
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: idpedido
+        in: path
+        description: ID del pedido
+        required: true
+        type: string
+      - name: model
+        in: body
+        description: Detalles del pedido
+        schema:
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/definitions/OrderDetailRequest'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Product:
+    get:
+      tags:
+      - Product
+      operationId: Get
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/ProductResponse'
+    post:
+      tags:
+      - Product
+      operationId: Post
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/ProductRequest'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Product/{id}:
+    get:
+      tags:
+      - Product
+      operationId: Get
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/ProductEntity'
+    put:
+      tags:
+      - Product
+      operationId: Put
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/ProductRequest'
+      responses:
+        200:
+          description: Success
+    delete:
+      tags:
+      - Product
+      operationId: Delete
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Provider:
+    get:
+      tags:
+      - Provider
+      operationId: GetProvider
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/ProviderEntity'
+    post:
+      tags:
+      - Provider
+      operationId: Post
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/ProviderRequest'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Provider/{id}:
+    get:
+      tags:
+      - Provider
+      operationId: Get
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/ProviderEntity'
+    put:
+      tags:
+      - Provider
+      operationId: Put
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/ProviderRequest'
+      responses:
+        200:
+          description: Success
+    delete:
+      tags:
+      - Provider
+      operationId: Delete
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Receipt:
+    get:
+      tags:
+      - Receipt
+      operationId: Get
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/ReceiptResponse'
+    post:
+      tags:
+      - Receipt
+      summary: Crear un nuevo recibo
+      operationId: Post
+      consumes:
+      - application/json-patch+json
+      - application/json
+      - text/json
+      - application/*+json
+      produces:
+      - application/json
+      parameters:
+      - name: model
+        in: body
+        schema:
+          $ref: '#/definitions/ReceiptRequest'
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Receipt/{id}:
+    get:
+      tags:
+      - Receipt
+      operationId: GetReceipt
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/ReceiptResponse'
+    delete:
+      tags:
+      - Receipt
+      operationId: Delete
+      consumes: []
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Receipt/AddPaymentMethod/{id}:
+    post:
+      tags:
+      - Receipt
+      summary: Método para actualizar los campos del método de pago por comprobante
+      operationId: AddPaymentMethod
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID del comprobante
+        required: true
+        type: string
+      - name: TipoPago
+        in: formData
+        type: string
+        enum:
+        - Efectivo
+        - Cheque
+        - Letra
+      - name: CantidadLetra
+        in: formData
+        type: integer
+        format: int32
+      - name: Imagen
+        in: formData
+        type: file
+      - name: DetalleLetra
+        in: formData
+        type: array
+        items: {}
+        collectionFormat: multi
+        uniqueItems: false
+      responses:
+        200:
+          description: Success
+  /DEV/api/v1/Receipt/GetAllPM:
+    get:
+      tags:
+      - Receipt
+      operationId: GetAllPM
+      consumes: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/PaymentMethodEntity'
+definitions:
+  RegisterDTO:
+    required:
+    - email
+    - password
+    - name
+    - lastName
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        format: password
+        maxLength: 100
+        minLength: 6
+        type: string
+      confirmPassword:
+        format: password
+        type: string
+      name:
+        type: string
+      lastName:
+        type: string
+  BrandEntity:
+    description: Entidad de marcas
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      nombre:
+        type: string
+  KardexEntity:
+    description: Kardex
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      idProducto:
+        type: string
+      minimumAmount:
+        format: int32
+        type: integer
+      currentAmount:
+        format: int32
+        type: integer
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  KardexRequest:
+    required:
+    - idProducto
+    type: object
+    properties:
+      idProducto:
+        type: string
+      minimumAmount:
+        format: int32
+        type: integer
+      currentAmount:
+        format: int32
+        type: integer
+  ProductsByProvider:
+    type: object
+    properties:
+      product:
+        $ref: '#/definitions/ProductEntity'
+      minimumAmount:
+        format: int32
+        type: integer
+      currentAmount:
+        format: int32
+        type: integer
+  ProductEntity:
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      numero:
+        format: int32
+        type: integer
+      codigo:
+        description: Correlativo (P-0001)
+        type: string
+      nombre:
+        type: string
+      precioUnitario:
+        format: double
+        type: number
+      moneda:
+        enum:
+        - Soles
+        - Dolares
+        type: string
+      um:
+        enum:
+        - Unidad
+        - Miligramo
+        - Gramo
+        - Kilogramo
+        - Litro
+        type: string
+      peso:
+        format: double
+        type: number
+      tipo:
+        type: string
+      descripcion:
+        type: string
+      idProveedor:
+        type: string
+      marca:
+        $ref: '#/definitions/BrandEntity'
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  OrderResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      numero:
+        format: int32
+        type: integer
+      codigo:
+        type: string
+      total:
+        format: double
+        type: number
+      estado:
+        type: string
+      idUsuario:
+        type: string
+      numeroFactura:
+        type: string
+      validado:
+        type: boolean
+      detallePedido:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/OrderDetailResponse'
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  OrderDetailResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      producto:
+        $ref: '#/definitions/ProductEntity'
+      cantidad:
+        format: int32
+        type: integer
+      subTotal:
+        format: double
+        type: number
+  OrderRequest:
+    required:
+    - detallePedido
+    type: object
+    properties:
+      idUsuario:
+        type: string
+      detallePedido:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/OrderDetailRequest'
+  OrderDetailRequest:
+    required:
+    - idProducto
+    type: object
+    properties:
+      idProducto:
+        type: string
+      cantidad:
+        format: int32
+        maximum: 2147483647
+        minimum: 0
+        type: integer
+  OrderEntity:
+    description: Pedidos
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      numero:
+        format: int32
+        type: integer
+      codigo:
+        description: Correlativo (O-0001)
+        type: string
+      total:
+        format: double
+        type: number
+      estado:
+        description: 'Estado del pedido (default: pendiente)'
+        enum:
+        - Pendiente
+        - Recibido
+        type: string
+      idUsuario:
+        type: string
+      idRecibo:
+        type: string
+      validado:
+        description: Campo usado para confirmar si la orden ya se validó en conjunto con el comprobante.
+        type: boolean
+      detallePedido:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/OrderDetailEntity'
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  OrderDetailEntity:
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      idProducto:
+        type: string
+      cantidad:
+        format: int32
+        type: integer
+      subTotal:
+        format: double
+        type: number
+  ProductResponse:
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      numero:
+        format: int32
+        type: integer
+      codigo:
+        type: string
+      nombre:
+        type: string
+      precioUnitario:
+        format: double
+        type: number
+      moneda:
+        type: string
+      um:
+        type: string
+      peso:
+        format: double
+        type: number
+      tipo:
+        type: string
+      descripcion:
+        type: string
+      idProveedor:
+        type: string
+      marca:
+        $ref: '#/definitions/BrandEntity'
+      proveedor:
+        $ref: '#/definitions/ProviderEntity'
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  ProviderEntity:
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      ruc:
+        type: string
+      razonSocial:
+        type: string
+      direccion:
+        type: string
+      telefono:
+        type: string
+      contacto:
+        type: string
+      celular:
+        type: string
+      email:
+        type: string
+      descripcion:
+        type: string
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  ProductRequest:
+    required:
+    - nombre
+    type: object
+    properties:
+      idProveedor:
+        type: string
+      nombre:
+        type: string
+      precioUnitario:
+        format: double
+        minimum: 0
+        type: number
+      moneda:
+        enum:
+        - Soles
+        - Dolares
+        type: string
+      um:
+        enum:
+        - Unidad
+        - Miligramo
+        - Gramo
+        - Kilogramo
+        - Litro
+        type: string
+      idMarca:
+        type: string
+      peso:
+        format: double
+        type: number
+      tipo:
+        type: string
+      descripcion:
+        type: string
+  ProviderRequest:
+    required:
+    - ruc
+    - razonSocial
+    type: object
+    properties:
+      ruc:
+        type: string
+      razonSocial:
+        type: string
+      direccion:
+        type: string
+      telefono:
+        maxLength: 10
+        type: string
+      contacto:
+        maxLength: 50
+        type: string
+      celular:
+        maxLength: 9
+        type: string
+      email:
+        type: string
+      descripcion:
+        maxLength: 100
+        type: string
+  ReceiptResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      numeroFactura:
+        type: string
+      fechaFactura:
+        format: date-time
+        type: string
+      tipo:
+        type: string
+      estado:
+        type: string
+      tieneMedioPago:
+        description: >-
+          Sólo es usado para mostrar si el comprobante a pesar de estar con estado conforme,
+
+          tiene el valor de tipo de pago en null
+        type: boolean
+      pedido:
+        $ref: '#/definitions/OrderResponse'
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  ReceiptRequest:
+    required:
+    - idOrden
+    - numeroFactura
+    - fechaFactura
+    type: object
+    properties:
+      idOrden:
+        type: string
+      numeroFactura:
+        type: string
+      fechaFactura:
+        format: date
+        type: string
+      tipo:
+        enum:
+        - Boleta
+        - Factura
+        type: string
+  LetterDetailRequest:
+    type: object
+    properties:
+      fecha:
+        format: date-time
+        type: string
+      dias:
+        format: int32
+        type: integer
+      monto:
+        format: double
+        type: number
+  PaymentMethodEntity:
+    type: object
+    properties:
+      internalId:
+        type: string
+      id:
+        type: string
+      idReceipt:
+        type: string
+      tipoPago:
+        enum:
+        - Efectivo
+        - Cheque
+        - Letra
+        type: string
+      cantidadLetra:
+        format: int32
+        type: integer
+      efectivoCheque:
+        $ref: '#/definitions/EfectivoChequeEntity'
+      detalleLetra:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/LetterDetailEntity'
+      updatedOn:
+        format: date-time
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+  EfectivoChequeEntity:
+    type: object
+    properties:
+      nombreArchivo:
+        type: string
+      archivo:
+        format: byte
+        type: string
+  LetterDetailEntity:
+    type: object
+    properties:
+      fecha:
+        format: date-time
+        type: string
+      dias:
+        format: int32
+        type: integer
+      monto:
+        format: double
+        type: number
+securityDefinitions:
+  Bearer:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+security:
+- Bearer: []
+

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WA_HyJ.Models.ViewModels.LetraDetalle>
+
+@{
+    Layout = null;
+}
+
+<table class="table table-hover center-all" id="DTDetalleLetra">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Monto)
+                </td>
+                <td>
+                    <div class="input-group mb-3">
+                        @Html.EditorFor(modelItem => item.Dias, new { htmlAttributes = new { @class = "form-control Dias" } })
+                        <div class="input-group-append">
+                            <span class="input-group-text">Dias</span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.Fecha, new { htmlAttributes = new { @class = "form-control Fecha", @disabled = true } })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    var _fecha = $("input[type=date]#Fecha").val();
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + (d.getDate()),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    $("table#DTDetalleLetra tbody").on("change paste keyup", "input[type='number'].Dias", function () {
+        //leer toda la tabla
+        $("table#DTDetalleLetra > tbody > tr").each(function (index) {
+            //Dias
+            var campo1;
+
+            $(this).children("td").each(function (index2) {
+                switch(index2){
+                    case 2:
+                        campo1 = parseInt($(this).find("input[type=number]").val());
+                }
+            });
+
+            var newDate = new Date(_fecha);
+
+            newDate.setDate(newDate.getDate() + campo1 + 1);
+
+            $(this).find("td:eq(3)").find("input[type=date]").val(formatDate(newDate));
+        });
+    });
+</script>

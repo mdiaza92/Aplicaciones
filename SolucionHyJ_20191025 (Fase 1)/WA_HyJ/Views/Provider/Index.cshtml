@@ -1,0 +1,234 @@
+﻿@model IEnumerable<WA_HyJ.Models.ViewModels.ListarProveedores>
+@using WA_HyJ.Helpers;
+
+@{
+    ViewBag.Title = "Proveedores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string valBtnDetalle = "Ver detalles";
+    string valBtnActualizar = "Actualizar";
+    string valBtnEliminar = "Eliminar";
+}
+
+@Html.AntiForgeryToken()
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Lista de proveedores</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Inicio</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@Html.ActionLink("Agregar", "Create")</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered table-hover dataTable" id="DataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.RUC)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.RazonSocial)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Direccion)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Telefono)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Contacto)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Celular)
+                                </th>
+                                <th class="lastcolumn"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RUC)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RazonSocial)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Direccion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Telefono)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Contacto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Celular)
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-default btn-sm tdDetalle" data-id="@item.Id" style="cursor: pointer;">
+                                            <span data-toggle="tooltip" data-placement="left" title="@valBtnDetalle" class="fa fa-search" aria-hidden="true"></span>
+                                        </a>
+                                        <a class="btn btn-default btn-sm tdActualizar" data-id="@item.Id" href="@Url.Action("Edit", new { id = item.Id })">
+                                            <span data-toggle="tooltip" data-placement="left" class="fa fa-pencil-alt" aria-hidden="true" title="@valBtnActualizar"></span>
+                                        </a>
+                                        <a class="btn btn-default btn-sm tdEliminar" data-id="@item.Id" style="cursor: pointer;">
+                                            <span data-toggle="tooltip" data-placement="left" title="@valBtnEliminar" class="fa fa-trash" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            /*Accion para mostrar el detalle*/
+            $("a.tdDetalle").on("click",function (e) {
+                var _id = $(this).data("id");
+                _detailsProvider(_id);
+            });
+
+            /*Acción para eliminar*/
+            $("a.tdEliminar").click(function (e) {
+                var _id = $(this).data("id");
+
+                var MainModal = $("#modal-default").modal();
+
+                MainModal.on('shown.bs.modal', function (event) {
+                    var modal = $(this);
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Content("~/Provider/Delete")',
+                        data: {
+                            id: _id
+                        },
+                        success: function (result) {
+                            modal.find('.modal-content').html(result);
+                        }
+                    });
+                });
+
+                MainModal.on('hide.bs.modal', function () {
+                    $(this).off();
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        function _detailsProvider(_id) {
+            var MainModal = $("#modal-default").modal();
+
+            MainModal.on('shown.bs.modal', function (event) {
+                var modal = $(this);
+
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Content("~/Provider/Details")',
+                    data: {
+                        id: _id
+                    },
+                    success: function (result) {
+                        modal.find('.modal-content').html(result);
+                    }
+                }).always(function () {
+                    MainModal.modal('handleUpdate');
+                });
+             });
+
+            MainModal.on('hide.bs.modal', function () {
+                $(this).off();
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        //Hace referencia al botón ELIMINAR en el partial view DELETE
+        function EliminarProveedor(e) {
+            var __id = $(e).data("id");
+
+            //Grab antiForgeryToken.
+            var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
+
+            $.ajax({
+                url: "@Url.Action("DeleteProvider", "Provider")",
+                data:{
+                    id: __id
+                },
+                type: "POST",
+                dataType: 'json',
+                headers: {
+                    "__RequestVerificationToken": antiForgeryToken
+                },
+                success: function (result) {
+                    if (typeof result === "string") {
+                        window.location.href = result;
+                    } else {
+                        toastr.info("Se obtuvo como respuesta " + result + " del servidor y no se procesó la solicitud.");
+                    }
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            var rsp = "";
+
+            if (jqXHR.status === 0) {
+
+                rsp = 'Not connect: Verify Network.';
+
+            } else if (jqXHR.status == 404) {
+
+                rsp = 'Requested page not found [404]';
+
+            } else if (jqXHR.status == 500) {
+
+                rsp = 'Internal Server Error [500].';
+
+            } else if (textStatus === 'parsererror') {
+
+                rsp = 'Requested JSON parse failed.';
+
+            } else if (textStatus === 'timeout') {
+
+                rsp = 'Time out error.';
+
+            } else if (textStatus === 'abort') {
+
+                rsp = 'Ajax request aborted.';
+
+            } else {
+                rsp = 'Uncaught Error: ' + jqXHR.responseText;
+            }
+
+            toastr.error(rsp);
+        });
+        }
+    </script>
+}

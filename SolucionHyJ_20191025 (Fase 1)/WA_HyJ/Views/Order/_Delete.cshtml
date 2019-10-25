@@ -1,0 +1,34 @@
+﻿@model WA_HyJ.Models.ViewModels.EliminarOrden
+
+<div class="modal-header">
+    <h5 class="modal-title">¿Está seguro que desea eliminar el siguiente registro?</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+    </dl>
+</div>
+
+<div class="modal-footer justify-content-between">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    <button type="button" class="btn btn-primary" data-id="@Model.Id" onclick="EliminarOrden(this);">Eliminar</button>
+</div>

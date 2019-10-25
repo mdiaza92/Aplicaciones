@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNet.Identity
+
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <!-- Add icons to the links using the .nav-icon class
+    with font-awesome or any other icon font library -->
+    <li class="nav-item">
+        <a href="@Url.Action("Index","Provider")" class="nav-link">
+            <i class="nav-icon fas fa-tasks"></i>
+            <p>
+                Proveedores
+            </p>
+        </a>
+
+    </li>
+
+    <li class="nav-item">
+        <a href="@Url.Action("Index","Product")" class="nav-link">
+            <i class="nav-icon fas fa-list"></i>
+            <p>
+                Productos
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item has-treeview menu-open">
+        <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+                Pedidos
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="@Url.Action("Index","Order")" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Lista de pedidos</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@Url.Action("Create","Order")" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Registrar pedidos</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a href="@Url.Action("Index","Receipt")" class="nav-link">
+            <i class="nav-icon fas fa-list"></i>
+            <p>
+                Comprobantes
+            </p>
+        </a>
+    </li>
+</ul>

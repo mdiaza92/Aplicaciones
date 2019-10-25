@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+}
+
+<hr style="margin:10px 0; border: 1px solid #000000" />
+
+<input id="fileMedioPago" type="file" class="file" data-preview-file-type="text">
+
+<script>
+    $(function () {
+        // initialize with defaults
+        $("input#fileMedioPago").fileinput({
+            theme: "fas",
+            allowedFileTypes: ['image'],
+            maxFileSize: 1500,
+            allowedFileExtensions: ['jpg', 'png'],
+            allowedPreviewTypes: ['image'],
+            showCancel: false,
+            showUpload: false,
+            showZoom: false,
+            showUploadedThumbs: false,
+            language: "es",
+            fileActionSettings: {
+                showZoom: false
+            },
+            autoOrientImage: false
+        });
+    });
+</script>

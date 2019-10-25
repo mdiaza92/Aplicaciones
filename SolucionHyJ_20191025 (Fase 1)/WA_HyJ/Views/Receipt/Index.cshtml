@@ -1,0 +1,264 @@
+﻿@model IEnumerable<WA_HyJ.Models.ViewModels.ListarComprobantes>
+
+@{
+    ViewBag.Title = "Comprobantes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string valBtnDetalle = "Ver detalles";
+    string valBtnActualizar = "Actualizar medio de pago";
+    string valBtnEliminar = "Eliminar";
+}
+
+@Html.AntiForgeryToken()
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Lista de @ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Inicio</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered table-hover center-all dataTable" id="DataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Comprobante)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FechaRegistro)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Tipo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Estado)
+                                </th>
+                                <th class="lastcolumn"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Comprobante)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaRegistro)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Tipo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Estado)
+                                </td>
+                                <td>
+                                    @if (!item.Validado)
+                                    {
+                                        <a class="btn btn-default btn-sm tdDetalle" data-id="@item.Id" style="cursor: pointer;">
+                                            <span data-toggle="tooltip" data-placement="left" title="@valBtnDetalle" class="fa fa-search" aria-hidden="true"></span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        if (!item.TieneMedioPago)
+                                        {
+                                            <a class="btn btn-default btn-sm tdActualizar" data-id="@item.Id" style="cursor: pointer;">
+                                                <span data-toggle="tooltip" data-placement="left" class="fa fa-pencil-alt" aria-hidden="true" title="@valBtnActualizar"></span>
+                                            </a>
+                                        }
+                                        <a class="btn btn-default btn-sm tdEliminar" data-id="@item.Id" style="cursor: pointer;">
+                                            <span data-toggle="tooltip" data-placement="left" title="@valBtnEliminar" class="fa fa-trash" aria-hidden="true"></span>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+@section Scripts{
+<script type="text/javascript">
+    $(function () {
+        /*Accion para mostrar el detalle*/
+        $("a.tdDetalle").on("click", function (e) {
+            var _id = $(this).data("id");
+            _detailsReceipt(_id);
+        });
+
+        /*Acción para eliminar*/
+        $("a.tdEliminar").click(function (e) {
+            var _id = $(this).data("id");
+            _deleteReceipt(_id);
+        });
+
+        /*Acción para actualizar medio de pago*/
+        $("a.tdActualizar").click(function (e) {
+            var _id = $(this).data("id");
+            _updatePaymentMethod(_id);
+        });
+    });
+
+    function _updatePaymentMethod(_id) {
+        var MainModal = $("#modal-default").modal();
+
+        MainModal.on('shown.bs.modal', function (event) {
+            var modal = $(this);
+            
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Content("~/Receipt/MedioPago")',
+                data: {
+                    id: _id
+                },
+                success: function (result) {
+                    modal.find('.modal-content').html(result);
+                }
+            }).always(function () {
+                MainModal.modal('handleUpdate');
+            });
+        });
+
+        MainModal.on('hide.bs.modal', function () {
+            $(this).off();
+        });
+    }
+
+    /*Accion: Eliminar*/
+    function _deleteReceipt(_id) {
+        var MainModal = $("#modal-default").modal();
+
+        MainModal.on('shown.bs.modal', function (event) {
+            var modal = $(this);
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Content("~/Receipt/Delete")',
+                data: {
+                    id: _id
+                },
+                success: function (result) {
+                    modal.find('.modal-content').html(result);
+                }
+            }).always(function () {
+                MainModal.modal('handleUpdate');
+            });
+        });
+
+        MainModal.on('hide.bs.modal', function () {
+            $(this).off();
+        });
+    }
+
+    /*Accion: Detalle*/
+    function _detailsReceipt(_id) {
+        var MainModal = $("#modal-default").modal();
+
+        MainModal.on('shown.bs.modal', function (event) {
+            var modal = $(this);
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Content("~/Receipt/Details")',
+                data: {
+                    id: _id
+                },
+                success: function (result) {
+                    modal.find('.modal-content').html(result);
+                }
+            }).always(function () {
+                MainModal.modal('handleUpdate');
+            });
+        });
+
+        MainModal.on('hide.bs.modal', function () {
+            $(this).off();
+        });
+    }
+
+    function EliminarComprobante(e) {
+        var __id = $(e).data("id");
+
+        //Grab antiForgeryToken.
+        var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
+
+        $.ajax({
+            url: "@Url.Action("DeleteReceipt", "Receipt")",
+            data:{
+                id: __id
+            },
+        type: "POST",
+        dataType: 'json',
+        headers: {
+            "__RequestVerificationToken": antiForgeryToken
+        },
+        success: function (result) {
+            if (typeof result === "string" && result.indexOf("/") > -1) {
+                window.location.href = result;
+            } else if (typeof result === "object") {
+                toastr.info(result._ErrorMessage);
+            } else {
+                toastr.info("Se obtuvo como respuesta " + result + " del servidor y no se procesó la solicitud.");
+            }
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        var rsp = "";
+
+        if (jqXHR.status === 0) {
+
+            rsp = 'Not connect: Verify Network.';
+
+        } else if (jqXHR.status == 404) {
+
+            rsp = 'Requested page not found [404]';
+
+        } else if (jqXHR.status == 500) {
+
+            rsp = 'Internal Server Error [500].';
+
+        } else if (textStatus === 'parsererror') {
+
+            rsp = 'Requested JSON parse failed.';
+
+        } else if (textStatus === 'timeout') {
+
+            rsp = 'Time out error.';
+
+        } else if (textStatus === 'abort') {
+
+            rsp = 'Ajax request aborted.';
+
+        } else {
+            rsp = 'Uncaught Error: ' + jqXHR.responseText;
+        }
+
+        toastr.error(rsp);
+    });
+    }
+</script>
+
+}

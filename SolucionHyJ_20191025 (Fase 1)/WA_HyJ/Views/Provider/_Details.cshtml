@@ -1,0 +1,60 @@
+﻿@model WA_HyJ.Models.ViewModels.DetalleProveedor
+
+<div>
+    <h4>DetalleProveedor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RUC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RUC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RazonSocial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RazonSocial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Direccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Direccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contacto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contacto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Celular)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Celular)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

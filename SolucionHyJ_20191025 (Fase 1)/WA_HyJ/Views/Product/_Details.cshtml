@@ -1,0 +1,86 @@
+﻿@model WA_HyJ.Models.ViewModels.DetalleProducto
+
+<div>
+    <h4>DetalleProducto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Proveedor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Proveedor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Costo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Costo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Moneda)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Moneda)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Peso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Peso)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Unidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Unidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+        @if (!string.IsNullOrEmpty(Model.Descripcion))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Descripcion)
+            </dd>
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

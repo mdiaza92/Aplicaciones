@@ -1,0 +1,30 @@
+﻿
+<div class="modal-header">
+    <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-warning"></i> Ups! No se encontró la página.</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="error-page">
+        <h4 class="headline text-warning">404</h4>
+        <div class="error-content">
+            <p>
+                No pudimos encontrar la página que estuviste buscando.
+                Mientras tanto, usted puede retornar a <a href="@Url.Action("Index", "Home")">la página de inicio</a>.
+            </p>
+            @*<form class="search-form">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search">
+                    <div class="input-group-append">
+                        <button type="submit" name="submit" class="btn btn-warning">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>*@
+        </div>
+        <!-- /.error-content -->
+    </div>
+    <!-- /.error-page -->
+</div>
